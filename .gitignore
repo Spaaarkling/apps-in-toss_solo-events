@@ -19,6 +19,11 @@
 
 # production
 /build
+/dist
+
+# granite build outputs
+/.granite/
+*.ait
 
 # misc
 .DS_Store

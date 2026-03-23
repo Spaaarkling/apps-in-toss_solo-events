@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Badge } from '@toss/tds-mobile';
 import { SoloEvent } from '@/types/event';
 import { formatPrice } from '@/utils/filters';
 
@@ -23,23 +24,19 @@ export default function EventCard({ event }: EventCardProps) {
             {event.area} · {event.place}
           </p>
         </div>
-        <span
-          className={`shrink-0 text-sm font-bold px-2.5 py-1 rounded-lg ${
-            event.price === 0
-              ? 'bg-emerald-500/15 text-emerald-400'
-              : 'bg-blue-500/15 text-blue-400'
-          }`}
+        <Badge
+          size="small"
+          variant="weak"
+          color={event.price === 0 ? 'green' : 'blue'}
         >
           {formatPrice(event.price)}
-        </span>
+        </Badge>
       </div>
 
       <div className="flex items-center justify-between mt-3">
-        <div className="flex items-center gap-1.5">
-          <span className="text-xs bg-violet-600/15 text-violet-400 px-2 py-0.5 rounded-md">
-            {event.ageGroup}
-          </span>
-        </div>
+        <Badge size="xsmall" variant="weak" color="elephant">
+          {event.ageGroup}
+        </Badge>
         <span className="text-xs text-gray-500">{event.hostName}</span>
       </div>
     </Link>

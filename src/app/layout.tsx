@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
+import TDSProvider from "@/components/TDSProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -29,9 +30,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} font-sans antialiased bg-[#0F1115] text-gray-100 min-h-dvh`}
       >
-        <div className="mx-auto max-w-md min-h-dvh">
-          {children}
-        </div>
+        <TDSProvider>
+          <div className="mx-auto max-w-md min-h-dvh">
+            {children}
+          </div>
+        </TDSProvider>
       </body>
     </html>
   );

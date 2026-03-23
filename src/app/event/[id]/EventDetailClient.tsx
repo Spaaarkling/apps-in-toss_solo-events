@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Badge, BottomCTA } from '@toss/tds-mobile';
 import { SoloEvent } from '@/types/event';
 import { formatPrice, getCategoryLabel } from '@/utils/filters';
 
@@ -20,11 +21,11 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
         <h1 className="text-base font-semibold text-white truncate">{event.title}</h1>
       </header>
 
-      <main className="flex-1 px-4 pb-24">
+      <main className="flex-1 px-4 pb-32">
         <div className="mt-3 mb-4">
-          <span className="text-xs bg-violet-600/20 text-violet-400 px-2.5 py-1 rounded-md font-medium">
+          <Badge size="small" variant="weak" color="elephant">
             {getCategoryLabel(event.category)}
-          </span>
+          </Badge>
         </div>
 
         <h2 className="text-xl font-bold text-white">{event.title}</h2>
@@ -39,18 +40,16 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#0F1115]/95 backdrop-blur-sm border-t border-[#1A1D23]">
-        <div className="mx-auto max-w-md px-4 py-3">
-          <a
-            href={event.applyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block w-full py-3.5 rounded-xl text-center text-sm font-semibold bg-violet-600 text-white hover:bg-violet-700 transition-colors"
-          >
-            신청하기
-          </a>
-        </div>
-      </div>
+      <BottomCTA.Single fixed hasSafeAreaPadding>
+        <a
+          href={event.applyUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: 'block', width: '100%', textAlign: 'center' }}
+        >
+          신청하기
+        </a>
+      </BottomCTA.Single>
     </div>
   );
 }

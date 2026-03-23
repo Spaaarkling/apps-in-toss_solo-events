@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { Badge, Button } from '@toss/tds-mobile';
 import { Category, Filters, SoloEvent } from '@/types/event';
 import { filterEvents } from '@/utils/filters';
 import TabBar from '@/components/TabBar';
@@ -56,20 +57,26 @@ export default function HomeClient({ events, areas, ageGroups }: HomeClientProps
 
       <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
         <div className="mx-auto max-w-md px-4 pb-5 flex justify-center">
-          <button
-            onClick={() => setShowFilters(true)}
-            className="pointer-events-auto flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#1A1D23] border border-[#2A2D35] text-sm font-medium text-gray-200 shadow-lg shadow-black/30 hover:bg-[#22252B] transition-colors"
-          >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-            필터
-            {activeFilterCount > 0 && (
-              <span className="bg-violet-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                {activeFilterCount}
+          <div className="pointer-events-auto">
+            <Button
+              size="large"
+              variant="weak"
+              color="dark"
+              onClick={() => setShowFilters(true)}
+            >
+              <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+                필터
+                {activeFilterCount > 0 && (
+                  <Badge size="xsmall" variant="fill" color="blue">
+                    {activeFilterCount}
+                  </Badge>
+                )}
               </span>
-            )}
-          </button>
+            </Button>
+          </div>
         </div>
       </div>
 

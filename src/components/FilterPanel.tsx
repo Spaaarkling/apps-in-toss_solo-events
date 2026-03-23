@@ -1,5 +1,6 @@
 'use client';
 
+import { BottomSheet, Button } from '@toss/tds-mobile';
 import { Filters, PriceRange } from '@/types/event';
 
 interface FilterPanelProps {
@@ -38,82 +39,79 @@ export default function FilterPanel({
     filters.priceRange !== 'all';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
-      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
-      <div className="relative w-full max-w-md bg-[#1A1D23] rounded-t-2xl sm:rounded-2xl max-h-[80vh] overflow-y-auto">
-        <div className="sticky top-0 bg-[#1A1D23] px-5 pt-5 pb-3 border-b border-[#2A2D35] flex items-center justify-between">
-          <h2 className="text-lg font-bold text-white">필터</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-white p-1">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M5 5L15 15M5 15L15 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </button>
-        </div>
-
-        <div className="p-5 space-y-6">
-          {/* 지역 */}
-          <section>
-            <h3 className="text-sm font-semibold text-gray-300 mb-2">지역</h3>
-            <div className="flex flex-wrap gap-2">
-              <ChipButton active={filters.area === 'all'} onClick={() => update({ area: 'all' })}>전체</ChipButton>
-              {availableAreas.map((area) => (
-                <ChipButton key={area} active={filters.area === area} onClick={() => update({ area })}>{area}</ChipButton>
-              ))}
-            </div>
-          </section>
-
-          {/* 나이대 */}
-          <section>
-            <h3 className="text-sm font-semibold text-gray-300 mb-2">나이대</h3>
-            <div className="flex flex-wrap gap-2">
-              <ChipButton active={filters.ageGroup === 'all'} onClick={() => update({ ageGroup: 'all' })}>전체</ChipButton>
-              {availableAgeGroups.map((ag) => (
-                <ChipButton key={ag} active={filters.ageGroup === ag} onClick={() => update({ ageGroup: ag })}>{ag}</ChipButton>
-              ))}
-            </div>
-          </section>
-
-          {/* 가격대 */}
-          <section>
-            <h3 className="text-sm font-semibold text-gray-300 mb-2">가격대</h3>
-            <div className="flex flex-wrap gap-2">
-              {PRICE_OPTIONS.map((opt) => (
-                <ChipButton key={opt.value} active={filters.priceRange === opt.value} onClick={() => update({ priceRange: opt.value })}>{opt.label}</ChipButton>
-              ))}
-            </div>
-          </section>
-        </div>
-
-        <div className="sticky bottom-0 bg-[#1A1D23] px-5 py-4 border-t border-[#2A2D35] flex gap-3">
-          {hasActiveFilters && (
-            <button
-              onClick={resetFilters}
-              className="px-4 py-2.5 rounded-xl text-sm text-gray-400 bg-[#2A2D35] hover:text-white transition-colors"
+    <BottomSheet
+      open
+      onClose={onClose}
+      header={<BottomSheet.Header>필터</BottomSheet.Header>}
+      cta={
+        <BottomSheet.CTA>
+          <div style={{ display: 'flex', gap: 8 }}>
+            {hasActiveFilters && (
+              <Button
+                size="large"
+                variant="weak"
+                color="dark"
+                onClick={resetFilters}
+              >
+                초기화
+              </Button>
+            )}
+            <Button
+              size="large"
+              display={hasActiveFilters ? 'inline' : 'full'}
+              color="primary"
+              onClick={onClose}
+              style={{ flex: 1 }}
             >
-              초기화
-            </button>
-          )}
-          <button
-            onClick={onClose}
-            className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-violet-600 text-white hover:bg-violet-700 transition-colors"
-          >
-            적용하기
-          </button>
-        </div>
+              적용하기
+            </Button>
+          </div>
+        </BottomSheet.CTA>
+      }
+    >
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: '8px 0' }}>
+        <FilterSection title="지역">
+          <ChipButton active={filters.area === 'all'} onClick={() => update({ area: 'all' })}>전체</ChipButton>
+          {availableAreas.map((area) => (
+            <ChipButton key={area} active={filters.area === area} onClick={() => update({ area })}>{area}</ChipButton>
+          ))}
+        </FilterSection>
+
+        <FilterSection title="나이대">
+          <ChipButton active={filters.ageGroup === 'all'} onClick={() => update({ ageGroup: 'all' })}>전체</ChipButton>
+          {availableAgeGroups.map((ag) => (
+            <ChipButton key={ag} active={filters.ageGroup === ag} onClick={() => update({ ageGroup: ag })}>{ag}</ChipButton>
+          ))}
+        </FilterSection>
+
+        <FilterSection title="가격대">
+          {PRICE_OPTIONS.map((opt) => (
+            <ChipButton key={opt.value} active={filters.priceRange === opt.value} onClick={() => update({ priceRange: opt.value })}>{opt.label}</ChipButton>
+          ))}
+        </FilterSection>
       </div>
-    </div>
+    </BottomSheet>
+  );
+}
+
+function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section>
+      <p style={{ fontSize: 13, fontWeight: 600, color: '#9CA3AF', marginBottom: 8 }}>{title}</p>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>{children}</div>
+    </section>
   );
 }
 
 function ChipButton({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
   return (
-    <button
+    <Button
+      size="small"
+      variant={active ? 'fill' : 'weak'}
+      color={active ? 'primary' : 'dark'}
       onClick={onClick}
-      className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-        active ? 'bg-violet-600 text-white' : 'bg-[#2A2D35] text-gray-400 hover:text-gray-200'
-      }`}
     >
       {children}
-    </button>
+    </Button>
   );
 }

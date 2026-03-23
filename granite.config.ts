@@ -16,4 +16,8 @@ export default defineConfig({
     },
   },
   permissions: [],
+  outdir: 'dist', // Next.js 빌드 산출물 경로 (dist/web/index.html)
+  webViewProps: {
+    type: 'partner', // 비게임 미니앱
+  },
 });

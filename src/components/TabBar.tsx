@@ -1,5 +1,6 @@
 'use client';
 
+import { Tab } from '@toss/tds-mobile';
 import { Category } from '@/types/event';
 import { getCategoryLabel } from '@/utils/filters';
 
@@ -11,21 +12,18 @@ interface TabBarProps {
 const TABS: Category[] = ['rotation', 'bar', 'party'];
 
 export default function TabBar({ activeTab, onTabChange }: TabBarProps) {
+  const activeIndex = TABS.indexOf(activeTab);
+
   return (
-    <div className="flex gap-1 bg-[#1A1D23] rounded-xl p-1">
-      {TABS.map((tab) => (
-        <button
-          key={tab}
-          onClick={() => onTabChange(tab)}
-          className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
-            activeTab === tab
-              ? 'bg-violet-600 text-white'
-              : 'text-gray-400 hover:text-gray-200'
-          }`}
-        >
+    <Tab
+      onChange={(index) => onTabChange(TABS[index])}
+      ariaLabel="이벤트 카테고리"
+    >
+      {TABS.map((tab, index) => (
+        <Tab.Item key={tab} selected={activeIndex === index}>
           {getCategoryLabel(tab)}
-        </button>
+        </Tab.Item>
       ))}
-    </div>
+    </Tab>
   );
 }
